@@ -6,6 +6,6 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world():
     videoId = request.args.get('videoId')
-    response = get_comments_byt_id(videoId)
+    comments = get_comments_byt_id(videoId)
 
-    return jsonify(response)
+    return jsonify({ 'count': len(comments), 'comments': comments })
