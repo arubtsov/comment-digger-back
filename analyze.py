@@ -11,8 +11,8 @@ def join_comments(comments):
 def is_punctuation(word):
     return word in string.punctuation or all(char in string.punctuation for char in word)
 
-def filter_words (tockens):
-    return [tocken for tocken in tockens if not is_punctuation(tocken) and tocken not in stop_words]
+def filter_words (tokens):
+    return [token for token in tokens if not is_punctuation(token) and token not in stop_words]
 
 def get_top_most_common(comments, number):
     text = join_comments(comments).lower()
