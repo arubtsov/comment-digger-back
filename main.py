@@ -7,7 +7,8 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world():
     videoId = request.args.get('videoId')
+    number = int(request.args.get('number'))
     comments = get_comments_byt_id(videoId)
-    most_common = get_top_most_common(comments, 30)
+    most_common = get_top_most_common(comments, number)
 
     return jsonify({ 'count': len(comments), 'comments': comments, 'mostCommon': most_common })
