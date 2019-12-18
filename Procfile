@@ -1,1 +1,2 @@
-web: gunicorn main:app -t 512
+web: gunicorn main:app
+worker: python worker.py
