@@ -1,4 +1,6 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
+
 from youtube import get_comments_byt_id
 from analyze import get_top_most_common
 
@@ -7,6 +9,7 @@ from rq.job import Job
 from worker import conn
 
 app = Flask(__name__)
+CORS(app)
 
 q = Queue(connection=conn)
 
