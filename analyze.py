@@ -21,8 +21,8 @@ def get_top_most_common(comments, number):
     tokens = word_tokenize(text)
 
     filtered_words = filter_words(tokens)
-    b_grams = bigrams(tokens)
-    trigrams = ngrams(tokens, 3)
+    b_grams = bigrams(filtered_words)
+    trigrams = ngrams(filtered_words, 3)
     all_tokens = list(filtered_words) + list(b_grams) + list(trigrams)
 
     frequency_distribution = FreqDist(all_tokens)
