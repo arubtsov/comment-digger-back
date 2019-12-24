@@ -34,4 +34,4 @@ def get_results(job_key):
         
         return jsonify({ 'count': len(comments), 'comments': comments, 'mostCommon': most_common })
     else:
-        return "Nay!", 202
+        return str(job.meta['progress']), 202
