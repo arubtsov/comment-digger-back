@@ -17,7 +17,7 @@ q = Queue(connection=conn)
 def hello_world():
     videoId = request.args.get('videoId')
 
-    job = q.enqueue_call(func=get_comments_byt_id, args=(videoId,), result_ttl=5000)
+    job = q.enqueue(get_comments_byt_id, args=(videoId,), result_ttl=5000, job_timeout=600)
     print(job.get_id())
 
     return str(job.get_id()), 200
