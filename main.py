@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-from youtube import get_comments_byt_id
+from youtube import get_comments_by_id
 from analyze import get_top_most_common
 
 from rq import Queue, exceptions
@@ -20,7 +20,7 @@ def get_results(video_id):
     try:
         job = Job.fetch(video_id, connection=conn)
     except (exceptions.NoSuchJobError):
-        job = q.enqueue(get_comments_byt_id, args=(video_id,), result_ttl=86400, job_timeout=600, job_id=video_id)
+        job = q.enqueue(get_comments_by_id, args=(video_id,), result_ttl=86400, job_timeout=600, job_id=video_id)
 
     if job.is_finished:
         number = int(request.args.get('number'))

@@ -32,7 +32,7 @@ def get_comments_count (videoId):
 
     return int(response['items'][0]['statistics']['commentCount'])
 
-def get_comments_byt_id(id):
+def get_comments_by_id(id):
     job = get_current_job()
     total_comments = get_comments_count(id)
     comments_loaded = 0
