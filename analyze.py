@@ -29,4 +29,3 @@ def get_top_most_common(comments, number):
     most_common_tokens = frequency_distribution.most_common(number)
 
     return [[token, freq] for token, freq in most_common_tokens]
-

@@ -4,7 +4,7 @@ from flask_cors import CORS
 from youtube import get_comments_byt_id
 from analyze import get_top_most_common
 
-from rq import Queue
+from rq import Queue, exceptions
 from rq.job import Job
 from worker import conn
 
@@ -13,25 +13,20 @@ CORS(app)
 
 q = Queue(connection=conn)
 
-@app.route('/')
-def hello_world():
-    videoId = request.args.get('videoId')
+@app.route("/comments/<video_id>", methods=['GET'])
+def get_results(video_id):
+    job = None
 
-    job = q.enqueue(get_comments_byt_id, args=(videoId,), result_ttl=5000, job_timeout=600)
-    print(job.get_id())
-
-    return str(job.get_id()), 200
-
-@app.route("/results/<job_key>", methods=['GET'])
-def get_results(job_key):
-    number = int(request.args.get('number'))
-
-    job = Job.fetch(job_key, connection=conn)
+    try:
+        job = Job.fetch(video_id, connection=conn)
+    except (exceptions.NoSuchJobError):
+        job = q.enqueue(get_comments_byt_id, args=(video_id,), result_ttl=86400, job_timeout=600, job_id=video_id)
 
     if job.is_finished:
+        number = int(request.args.get('number'))
         comments = job.result
         most_common = get_top_most_common(comments, number)
-        
-        return jsonify({ 'count': len(comments), 'comments': comments, 'mostCommon': most_common })
+
+        return jsonify({ 'count': len(comments), 'comments': comments, 'mostCommon': most_common }), 200
     else:
-        return str(job.meta['progress']), 202
+        return jsonify({ 'progress': job.meta['progress'] if 'progress' in job.meta else 0 }), 202
