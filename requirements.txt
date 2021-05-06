@@ -4,4 +4,4 @@ google-api-python-client==1.7.11
 nltk==3.4.5
 redis==3.3.11
 rq==1.1.0
-Flask-Cors==3.0.8
+Flask-Cors==3.0.9
